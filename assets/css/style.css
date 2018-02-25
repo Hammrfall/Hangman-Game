@@ -5,6 +5,9 @@ h1 {
     font-family: 'Oleo Script Swash Caps', cursive;
     font-size: 36px;
 }
+h2 {
+    font-size: 18px;
+}
 
 body { 
    background-image: URL("../images/midearth.jpg");
@@ -86,7 +89,38 @@ body {
     float: left;
 }
 
-@media screen and (max-width: 969px) {
+@media screen and (max-width: 720px) {
+    #wordbox {
+        left: 20px;
+        top: 425px;
+    }
 
-    
+    #guessedbox {
+        left: 20px;
+        top: 550px;   
+    }
+    #gollumsbox {
+        left: 20px;
+        top: 675px; 
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+    #wordbox {
+        left: 0;
+        width: 100%;
+        margin: 0;
+    }
+    #guessedbox {
+        left: 0;
+        width: 100%;
+        margin: 0;
+    }
+    #gollumsbox {
+        left: 0;
+        width: 100%;
+        margin: 0;
+    }
+
 }
