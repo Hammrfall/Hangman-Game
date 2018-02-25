@@ -5,23 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hangman game</title>
-    <style ref="assets/css/reset.css" type="text/css"></style>
-    <style ref="assets/css/style.css" type = "text/css"></style>
-
-
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/reset.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/style.css" type = "text/css">
 </head>
 
 <body>
-    
-<header>
+ 
+    <!--Game title of page-->
+<div class="header">
+    <h1><b>Lord of the Rings Hangman Game</b></h1>
+    <h2>Characters, places, and Gollum's riddles!</h2>
+</div>
 
-</header>
+    <!--Game meta and play information-->
+<div id="scorebox" class="container">
+    Press any key to get started!
+    <br><br>
+    <h2>Wins: </h2><span id="wins">0</span> 
+    <br><br>
+    <h2>Guesses left this round: </h2><span id="guesses">0</span>
+</div>
+
+ <!-- Displays the current player's correct guesses -->
+<div id ="wordbox" class="container">
+     <span id="guessword">____________________</span>
+</div>
+
+<!-- Displays the letters the current player has guessed -->
+<div id="guessedbox" class="container">
+    <h2>Letters already used:</h2> <span id="guessedletters">abcdefghijklmnopqrstuvwxyz</span>
+</div>
+
+<!-- Displays Gollum's riddle -->
+<div id="gollumsbox" class="container">
+    <h2>Gollum's Riddle:</h2> <span id="gollumsriddle">What has three eyes but cannot see?</span>
+</div>
 
 
 
+ <script src="assets/javascript/game.js"></script>
 
-
-
-    <script src="assets/javascript/game.js"></script>
 </body>
 </html>
