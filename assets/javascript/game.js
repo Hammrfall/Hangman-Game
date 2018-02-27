@@ -1,8 +1,9 @@
 
 
 
-var wordsToGuess = ["potatoes","aragorn" ];
-var GollumsRiddles = ["What has more eyes than you but cannot see? (We hates them)", "He stuffed us in a sack - not very kingly if yu ask us."];
+// global variables
+var wordsToGuess = ["potatoes","aragorn","shelob","boromir" ];
+var GollumsRiddles = ["What has more eyes than you but cannot see? (We hates them)", "He stuffed us in a sack - not very kingly if yu ask us.","She can do the works for us - nasty hobbits deserve her attention!","he wants the precious too!  why is he loved and we aren't?"];
 var currentWordArray = [""];
 var guessedLettersArray = [""];
 var guessWord = "";
@@ -10,7 +11,9 @@ var wrongLettersArray = [""];
 var wrongLetters = "";
 
 
+//Objects 
 
+//Current game object that runs the game
 var currentGame = {
     name: 'Hangman Game',
     totalWins: 0,
@@ -26,6 +29,9 @@ var currentGame = {
     currentWordArray = [""];
     guessedLettersArray = [""];
     guessWord = "";
+    wrongLetters = "";
+    wrongLettersArray = [""];
+    this.guessesLeft = this.guessMax;
     this.currentWord = wordsToGuess[this.currentWordIndex];
     this.populateWordArrays();
     this.populateGollumsRiddle();
@@ -62,33 +68,56 @@ var currentGame = {
                 guessWord = guessWord + guessedLettersArray[j];
             }
         }
-            //Actions if the letter is an incorret guess
+            //Actions if the letter is an incorrect guess
         else {
             this.guessesLeft--;
             wrongLettersArray.push(letter);
-            if (wrongLettersArray.length = 1) {
+            if (wrongLettersArray.length <= 2) {
                 wrongLetters = letter;
             }
             else {
-            wrongLetters = wrongLetters + ", " + letter;
+                wrongLetters = wrongLetters + ", " + letter;
             }
 
         
         }
+        console.log (wrongLettersArray);
         return isCorrect;
+    },
+
+    win (){
+        var returnValue = true;
+        for (var i = 0; i < guessedLettersArray.length; i++ ) {
+            if (guessedLettersArray[i] =="_") { 
+                returnValue = false;           
+            }
+        }
+        return returnValue;
+    },
+
+    loss (){
+        var returnvalue;
+        if (this.guessesLeft <=0) {
+            returnvalue = true;
+        }
+        else {
+            returnvalue = false;
+        }
+        return returnvalue;
     }
 
 
- }; // HangmanGame object closed
+ }; // Current Game object closed
 
-
+//Display object controls the dynamic HTML
 var display = {
     clearScreen() {
         document.getElementById('guessword').innerHTML="";
-        document.getElementById('guessedletters').innerHTML = "";
+        document.getElementById('wrongletters').innerHTML = "";
         document.getElementById('gollumsriddle').innerHTML = "";
         document.getElementById('wins').innerHTML = "";
         document.getElementById('guesses').innerHTML = "";
+        document.getElementById('wrongletters').innerHTML = "" ;
     },
 
     updateScreen() {
@@ -96,29 +125,42 @@ var display = {
         // document.getElementById('guessedletters').innerHTML = currentGame.gue ;
         document.getElementById('gollumsriddle').innerHTML = currentGame.gollumsRiddle ;
         document.getElementById('wins').innerHTML = currentGame.totalWins;
-        document.getElementById('guesses').innerHTML = currentGame.guessesLeft ;   
+        document.getElementById('guesses').innerHTML = currentGame.guessesLeft ; 
+        document.getElementById('wrongletters').innerHTML = wrongLetters ;
+
     }
 
-};
+}; //Display object closed
 
 
-//  Initial operational code begins
+//  Operational code begins:
+
+//Initial setup
 display.clearScreen();
-console.log (currentGame);
 currentGame.startNewWord();
 display.updateScreen();
 
-// Captures key stroke by user
+// runs on key stroke event by user
 document.onkeyup = function(event) {
     // Determines which key was pressed.
     var userGuess = event.key;
-    if (currentGame.incomingGuess(userGuess)) {
-        // check for win
+    //passes the key to the currentgame object for processing
+    if (currentGame.incomingGuess(userGuess)) { 
+        // Correct guess: check for win
+        if (currentGame.win()) {
+            currentGame.totalWins++;
+            currentGame.startNewWord();
+        }
     }
     else {
-        // check for loss
+        // incorrect guess:  check for loss
+        if (currentGame.loss()) {
+            alert("We beats you!  Not as clever as you thought!");
+            currentGame.startNewWord();
+        }
     }
-        display.updateScreen();
+    display.clearScreen();
+    display.updateScreen();
 };
 
 
