@@ -17,7 +17,7 @@ var wrongLetters = "";
 var currentGame = {
     name: 'Hangman Game',
     totalWins: 0,
-    guessMax: 7,
+    guessMax: 12,
     guessesLeft: this.guessMax,
     currentWord: "",
     currentWordIndex: 0,
@@ -115,17 +115,20 @@ var display = {
         document.getElementById('gollumsriddle').innerHTML = "";
         document.getElementById('wins').innerHTML = "";
         document.getElementById('guesses').innerHTML = "";
-        document.getElementById('wrongletters').innerHTML = "" ;
     },
 
     updateScreen() {
         document.getElementById('guessword').innerHTML = guessWord;
+        document.getElementById('wrongletters').innerHTML = wrongLetters ;
         document.getElementById('gollumsriddle').innerHTML = currentGame.gollumsRiddle ;
         document.getElementById('wins').innerHTML = currentGame.totalWins;
         document.getElementById('guesses').innerHTML = currentGame.guessesLeft ; 
-        document.getElementById('wrongletters').innerHTML = wrongLetters ;
+    },
 
-    }
+    playAudio(ElementName) { 
+        var myElement  = document.getElementById(ElementName); 
+        myElement.play(); 
+    } 
 
 }; //Display object closed
 
@@ -139,21 +142,21 @@ display.updateScreen();
 
 // runs on key stroke event by user
 document.onkeyup = function(event) {
-    // Determines which key was pressed.
     var userGuess = event.key;
     //passes the key to the currentgame object for evaluation
     if (currentGame.incomingGuess(userGuess)) { 
         // Correct guess: checks for win
+        display.updateScreen();
         if (currentGame.win()) {
-            currentGame.totalWins++;
-            alert("No fair! You beats us! Tricksy human!");
+            currentGame.totalWins++;            
+            display.playAudio ("winaudio");
             currentGame.startNewWord();
         }
     }
     else {
         // incorrect guess:  check for loss
         if (currentGame.loss()) {
-            alert("We beats you!  Not as clever as you thought!");
+            display.playAudio ("loseaudio");
             currentGame.startNewWord();
         }
     }             
