@@ -88,6 +88,19 @@ body {
 #gollumpic {
     float: left;
 }
+#gollumwalking {
+    position: fixed;
+    bottom: 0px;
+    left: 10px;
+    z-index: 2;
+}
+#precious {
+    position: fixed;
+    bottom: 0px;
+    left: 250px;
+    z-index: 3;
+}
+    
 
 @media screen and (max-width: 720px) {
     #wordbox {
@@ -123,4 +136,6 @@ body {
         margin: 0;
     }
 
+
+    }
 }

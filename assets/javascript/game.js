@@ -9,11 +9,8 @@ var guessedLettersArray = [""];
 var guessWord = "";
 var wrongLettersArray = [""];
 var wrongLetters = "";
-
-
-//Objects 
-
-//Current game object that runs the game
+//objects 
+// game object that runs the rules of the game
 var currentGame = {
     name: 'Hangman Game',
     totalWins: 0,
@@ -37,7 +34,7 @@ var currentGame = {
     },
 
     populateWordArrays() {
-        if (this.currentWordIndex <= wordsToGuess.length) {
+        if (this.currentWordIndex < wordsToGuess.length) {
             for (var i = 0; i < this.currentWord.length; i++ ){
                 currentWordArray[i]= this.currentWord.charAt(i);
                 guessedLettersArray[i] = "_";
@@ -70,13 +67,18 @@ var currentGame = {
         }
             //Actions if the letter is an incorrect guess
         else {
-            this.guessesLeft--;
-            wrongLettersArray.push(letter);
-            if (wrongLettersArray.length <= 2) {
-                wrongLetters = letter;
+            if (this.wasAlreadyGuessed (letter)){
+                //do nothing
             }
             else {
-                wrongLetters = wrongLetters + ", " + letter;
+                this.guessesLeft--;
+                wrongLettersArray.push(letter);
+                if (wrongLettersArray.length <= 2) {
+                    wrongLetters = letter;
+                }
+                else {
+                    wrongLetters = wrongLetters + ", " + letter;
+                }
             }
 
         
@@ -84,30 +86,27 @@ var currentGame = {
         return isCorrect;
     },
 
+    wasAlreadyGuessed (checkLetter){
+        var returnValue = false;
+        if (wrongLettersArray.indexOf(checkLetter) > -1){returnValue = true;}
+        return returnValue;
+    },
+
     win (){
         var returnValue = true;
-        for (var i = 0; i < guessedLettersArray.length; i++ ) {
-            if (guessedLettersArray[i] =="_") { 
-                returnValue = false;           
-            }
-        }
+        if (guessedLettersArray.indexOf("_") > -1){returnValue = false;}
         return returnValue;
     },
 
     loss (){
-        var returnvalue;
-        if (this.guessesLeft <=0) {
-            returnvalue = true;
-        }
-        else {
-            returnvalue = false;
-        }
+        var returnvalue = false;
+        if (this.guessesLeft <=0) {returnvalue = true;}
         return returnvalue;
     }
 
- }; // Current Game object closed
+ }; // Game object closed
 
-//Display object controls the dynamic HTML
+//display object controls the presentation to the user
 var display = {
     clearScreen() {
         document.getElementById('guessword').innerHTML="";
@@ -119,10 +118,12 @@ var display = {
 
     updateScreen() {
         document.getElementById('guessword').innerHTML = guessWord;
-        document.getElementById('wrongletters').innerHTML = wrongLetters ;
-        document.getElementById('gollumsriddle').innerHTML = currentGame.gollumsRiddle ;
+        document.getElementById('wrongletters').innerHTML = wrongLetters;
+        document.getElementById('gollumsriddle').innerHTML = currentGame.gollumsRiddle;
         document.getElementById('wins').innerHTML = currentGame.totalWins;
-        document.getElementById('guesses').innerHTML = currentGame.guessesLeft ; 
+        document.getElementById('guesses').innerHTML = currentGame.guessesLeft; 
+        document.getElementById("gollumwalking").style.left= (10 + ((currentGame.guessMax -currentGame.guessesLeft) * 12))   + "px"; 
+        document.getElementById("precious").style.left= (82 + (currentGame.guessMax) * 10)   + "px";
     },
 
     playAudio(ElementName) { 
@@ -132,21 +133,17 @@ var display = {
 
 }; //Display object closed
 
-
 //  Operational code begins:
-
 //Initial setup
 display.clearScreen();
 currentGame.startNewWord();
 display.updateScreen();
-
 // runs on key stroke event by user
 document.onkeyup = function(event) {
     var userGuess = event.key;
     //passes the key to the currentgame object for evaluation
     if (currentGame.incomingGuess(userGuess)) { 
-        // Correct guess: checks for win
-        display.updateScreen();
+        // returned true (correct guess): check for win
         if (currentGame.win()) {
             currentGame.totalWins++;            
             display.playAudio ("winaudio");
@@ -154,7 +151,7 @@ document.onkeyup = function(event) {
         }
     }
     else {
-        // incorrect guess:  check for loss
+        // returned false (incorrect guess):  check for loss
         if (currentGame.loss()) {
             display.playAudio ("loseaudio");
             currentGame.startNewWord();
