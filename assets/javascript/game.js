@@ -2,8 +2,8 @@
 
 
 // global variables
-var wordsToGuess = ["potatoes","aragorn","shelob","boromir" ];
-var GollumsRiddles = ["What has more eyes than you but cannot see? (We hates them)", "He stuffed us in a sack - not very kingly if yu ask us.","She can do the works for us - nasty hobbits deserve her attention!","he wants the precious too!  why is he loved and we aren't?"];
+var wordsToGuess = ["potatoes", "hobbits", "aragorn","shelob","boromir" ];
+var GollumsRiddles = ["What has more eyes than you but cannot see? (We hates them)", "They are the short people that stole the precious!", "He stuffed us in a sack - not very kingly if yu ask us.","She can do the works for us - nasty hobbits deserve her attention!","he wants the precious too!  why is he loved and we aren't?"];
 var currentWordArray = [""];
 var guessedLettersArray = [""];
 var guessWord = "";
@@ -18,12 +18,10 @@ var currentGame = {
     name: 'Hangman Game',
     totalWins: 0,
     guessMax: 7,
-    guessesLeft: 7,
+    guessesLeft: this.guessMax,
     currentWord: "",
     currentWordIndex: 0,
     gollumsRiddle: "",
-    
-
     
     startNewWord  () {
     currentWordArray = [""];
@@ -39,14 +37,16 @@ var currentGame = {
     },
 
     populateWordArrays() {
-        for (var i = 0; i < this.currentWord.length; i++ ){
-            currentWordArray[i]= this.currentWord.charAt(i);
-            guessedLettersArray[i] = "_";
-            guessWord = guessWord + "_";
+        if (this.currentWordIndex <= wordsToGuess.length) {
+            for (var i = 0; i < this.currentWord.length; i++ ){
+                currentWordArray[i]= this.currentWord.charAt(i);
+                guessedLettersArray[i] = "_";
+                guessWord = guessWord + "_";
+            }
         }
-        console.log (currentWordArray);
-        console.log (guessedLettersArray);
-        console.log (guessWord);
+        else {
+            alert("That's all - now goes away!");
+        }
     },
 
     populateGollumsRiddle() {
@@ -81,7 +81,6 @@ var currentGame = {
 
         
         }
-        console.log (wrongLettersArray);
         return isCorrect;
     },
 
@@ -106,7 +105,6 @@ var currentGame = {
         return returnvalue;
     }
 
-
  }; // Current Game object closed
 
 //Display object controls the dynamic HTML
@@ -122,7 +120,6 @@ var display = {
 
     updateScreen() {
         document.getElementById('guessword').innerHTML = guessWord;
-        // document.getElementById('guessedletters').innerHTML = currentGame.gue ;
         document.getElementById('gollumsriddle').innerHTML = currentGame.gollumsRiddle ;
         document.getElementById('wins').innerHTML = currentGame.totalWins;
         document.getElementById('guesses').innerHTML = currentGame.guessesLeft ; 
@@ -144,11 +141,12 @@ display.updateScreen();
 document.onkeyup = function(event) {
     // Determines which key was pressed.
     var userGuess = event.key;
-    //passes the key to the currentgame object for processing
+    //passes the key to the currentgame object for evaluation
     if (currentGame.incomingGuess(userGuess)) { 
-        // Correct guess: check for win
+        // Correct guess: checks for win
         if (currentGame.win()) {
             currentGame.totalWins++;
+            alert("No fair! You beats us! Tricksy human!");
             currentGame.startNewWord();
         }
     }
@@ -158,8 +156,8 @@ document.onkeyup = function(event) {
             alert("We beats you!  Not as clever as you thought!");
             currentGame.startNewWord();
         }
-    }
-    display.clearScreen();
+    }             
+    display.clearScreen ();
     display.updateScreen();
 };
 
