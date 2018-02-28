@@ -79,9 +79,7 @@ var currentGame = {
                 else {
                     wrongLetters = wrongLetters + ", " + letter;
                 }
-            }
-
-        
+            }        
         }
         return isCorrect;
     },
@@ -105,7 +103,6 @@ var currentGame = {
     }
 
  }; // Game object closed
-
 //display object controls the presentation to the user
 var display = {
     clearScreen() {
