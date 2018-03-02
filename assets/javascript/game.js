@@ -2,8 +2,9 @@
 
 
 // global variables
-var wordsToGuess = ["potatoes", "hobbits", "aragorn","shelob","boromir" ];
-var GollumsRiddles = ["What has more eyes than you but cannot see? (We hates them)", "They are the short people that stole the precious!", "He stuffed us in a sack - not very kingly if yu ask us.","She can do the works for us - nasty hobbits deserve her attention!","he wants the precious too!  why is he loved and we aren't?"];
+
+var wordsToGuess = ["potatoes","snow", "hobbits", "mountains", "aragorn","fish", "spider","wind", "boromir","time", "gandalf" ];
+var GollumsRiddles = ["What has more eyes than you but cannot see? (We hates them)", "It makes a man who cannot see, covers beds and uncovered heads, and falls down silently", "Short and simple, gardeners and ale brewers- they stole the precious!", "What has roots as nobody sees -is taller than trees. Up, up it goes, and yet never grows?","A reluctant King, scruffy and mean, he stuffs us in a sack - not very kingly if you asks us.","Alive without breath, as cold as death; Never thirsty, ever drinking, all in mail never clinking.", "She can do the work for us - kill the nasty hobbits!", "Voiceless it cries. Wingless flutters, toothless bites. Mouthless mutters.", "He wants the precious too!  Why is he forgiven and we are not?", "All things it devours: birds, beasts, trees, flowers; Gnaws iron, bites steel; grinds hard stones to meal; slays kings, ruins town, and beats high mountains down.", "Pointy headed old man - he's tricksy with his fireworks!",""];
 var currentWordArray = [""];
 var guessedLettersArray = [""];
 var guessWord = "";
@@ -50,7 +51,8 @@ var currentGame = {
         this.gollumsRiddle = GollumsRiddles[this.currentWordIndex];
     },
 
-    incomingGuess(letter) {
+    incomingGuess(Letter) {
+        var letter = Letter.toLowerCase(); 
         var isCorrect = false;
         for (var i = 0; i < this.currentWord.length; i++ ){
             if (currentWordArray[i] == letter){
